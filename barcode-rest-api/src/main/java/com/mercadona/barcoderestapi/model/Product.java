@@ -10,31 +10,33 @@ import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
-import lombok.Builder.Default;
-
 
 @Data
 @Entity
-@ToString(exclude = {"description"})
-@EqualsAndHashCode(exclude = {"description"})
-@AllArgsConstructor
-@Builder
+@ToString(exclude = { "description" })
+@EqualsAndHashCode(exclude = { "description" })
+@NoArgsConstructor
 public class Product {
-    
+
+    public Product(Integer barcode, String name, BigDecimal price, String description) {
+        this.barcode = barcode;
+        this.name = name;
+        this.price = price;
+        this.description = description;
+    }
 
     @NotNull
     @Size(min = 2, max = 30)
     @Column(nullable = false)
     private String name;
 
-    @NotNull
-    @DecimalMin(value = "0.0", inclusive = false)
-    @Digits(integer = 3, fraction = 2)
+    @NotNull(message = "The price cannot be null")
+    @DecimalMin(value = "0.0", inclusive = false, message = "The price must be greater than 0")
+    @Digits(integer = 4, fraction = 2, message = "The price must be a number with 2 decimal places")
     @Column(nullable = false)
     private BigDecimal price;
 
@@ -44,14 +46,13 @@ public class Product {
 
     @Id
     @NotNull
+    @Digits(integer = 5, fraction = 0, message = "The barcode must be a number with 5 digits")
     @Column(unique = true, nullable = false)
-    private Long barcode;
+    private Integer barcode;
 
-    @Default
     @Column(nullable = false)
     private LocalDate createAt = LocalDate.now();
 
-    @Default
     @Column(nullable = false)
     private LocalDate updateAt = LocalDate.now();
 
