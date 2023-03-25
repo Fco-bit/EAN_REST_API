@@ -22,7 +22,8 @@ public class SecurityConfiguration {
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/getProvider/**")).permitAll()
                         .requestMatchers("/addProvider").permitAll()
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/updateProvider/**")).permitAll()
-                        .requestMatchers(AntPathRequestMatcher.antMatcher("/deleteProvider/**")).permitAll())
+                        .requestMatchers(AntPathRequestMatcher.antMatcher("/deleteProvider/**")).permitAll()
+                        .requestMatchers(AntPathRequestMatcher.antMatcher("/getEan/**")).permitAll())
                 .headers(headers -> headers.frameOptions().disable())
                 .csrf(csrf -> csrf
                         .ignoringRequestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**"))

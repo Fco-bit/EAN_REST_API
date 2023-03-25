@@ -34,13 +34,12 @@ public class CrudController {
     @GetMapping("/")
     public String index() {
 
-        return "Greetings from Spring Boot!";
+        return "Welcome to the BEST Barcode REST API!";
     }
 
     @GetMapping("/getProduct/{barcode}")
     public ResponseEntity<Object> getProduct(@PathVariable Integer barcode) {
         Product product = productService.getById(barcode).orElse(null);
-        System.out.println(product);
         if (product != null) {
             return ResponseEntity.ok(product);
         } else {
@@ -55,6 +54,7 @@ public class CrudController {
     @PostMapping("/addProduct")
     public ResponseEntity<Object> addProduct(@Valid @RequestBody Product product, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
+            //get the errors messages 
             List<String> errors = bindingResult.getAllErrors().stream().map(x -> x.getDefaultMessage()).toList();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new HashMap<>() {
                 {
@@ -76,6 +76,7 @@ public class CrudController {
     public ResponseEntity<Object> updateProduct(@PathVariable Integer barcode, @Valid @RequestBody Product product,
             BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
+            //get the errors messages 
             List<String> errors = bindingResult.getAllErrors().stream().map(x -> x.getDefaultMessage()).toList();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new HashMap<>() {
                 {
@@ -138,6 +139,7 @@ public class CrudController {
     @PostMapping("/addProvider")
     public ResponseEntity<Object> addProvider(@Valid @RequestBody Provider provider, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
+            //get the errors messages 
             List<String> errors = bindingResult.getAllErrors().stream().map(x -> x.getDefaultMessage()).toList();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new HashMap<>() {
                 {
@@ -159,6 +161,7 @@ public class CrudController {
     public ResponseEntity<Object> updateProvider(@PathVariable Integer barcode, @Valid @RequestBody Provider provider,
             BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
+            //get the errors messages 
             List<String> errors = bindingResult.getAllErrors().stream().map(x -> x.getDefaultMessage()).toList();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new HashMap<>() {
                 {
