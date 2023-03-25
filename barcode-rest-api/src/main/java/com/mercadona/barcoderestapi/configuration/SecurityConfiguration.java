@@ -1,10 +1,17 @@
 package com.mercadona.barcoderestapi.configuration;
 
+import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
+
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import com.github.benmanes.caffeine.cache.Caffeine;
 
 @Configuration
 public class SecurityConfiguration {
@@ -33,6 +40,16 @@ public class SecurityConfiguration {
                         .ignoringRequestMatchers(AntPathRequestMatcher.antMatcher("/updateProvider/**")));
 
         return http.build();
+    }
+
+    
+    @Bean
+    public CacheManager cacheManager() {
+        String [] cacheNames = {"products", "providers"};
+        CaffeineCacheManager cacheManager = new CaffeineCacheManager();
+        cacheManager.setCaffeine(Caffeine.newBuilder().expireAfterWrite(1, TimeUnit.MINUTES));
+        cacheManager.setCacheNames(Arrays.asList(cacheNames));
+        return cacheManager;
     }
 
 }

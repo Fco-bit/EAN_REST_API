@@ -3,6 +3,7 @@ package com.mercadona.barcoderestapi.service;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.mercadona.barcoderestapi.model.Product;
@@ -14,6 +15,8 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
+    //It only makes sense to cache the getById method since it is the only one who does not make a change if the DB
+    @Cacheable("products")
     public Optional<Product> getById(int id) {
         return productRepository.findById(id);
     }
