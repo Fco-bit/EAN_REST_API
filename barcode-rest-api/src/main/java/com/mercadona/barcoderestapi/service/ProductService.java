@@ -15,7 +15,8 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
-    //It only makes sense to cache the getById method since it is the only one who does not make a change if the DB
+    // It only makes sense to cache the getById method since it is the only one who
+    // does not make a change if the DB
     @Cacheable("products")
     public Optional<Product> getById(String id) {
         return productRepository.findById(id);
@@ -28,11 +29,13 @@ public class ProductService {
     public void delete(String id) {
         productRepository.deleteById(id);
     }
-    
+
+    // Not cacheable since can lead to inconsistencies
     public Boolean existsById(String id) {
         return productRepository.existsById(id);
     }
 
+    // Validate the product barcode
     public String validBarcode(String barcode) {
         try {
             Integer.parseInt(barcode);

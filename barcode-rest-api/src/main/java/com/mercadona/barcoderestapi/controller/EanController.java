@@ -46,8 +46,9 @@ public class EanController {
         // Get the EAN data (Product, Provider, Destination)
         HashMap<String, String> ean13Map = eanService.getEan13(ean13);
 
-        //Validate the code from the provider and the product separately
-        String validatorProductAndProviderMessage = eanService.validateProductAndProvideCodes(ean13Map.get("providerBarcode"), ean13Map.get("productBarcode"));
+        // Validate the code from the provider and the product separately
+        String validatorProductAndProviderMessage = eanService
+                .validateProductAndProvideCodes(ean13Map.get("providerBarcode"), ean13Map.get("productBarcode"));
         if (validatorProductAndProviderMessage != "success") {
             return ResponseEntity.badRequest().body(new HashMap<>() {
                 {

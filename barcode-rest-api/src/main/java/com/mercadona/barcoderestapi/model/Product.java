@@ -3,8 +3,6 @@ package com.mercadona.barcoderestapi.model;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -31,8 +29,8 @@ public class Product {
         this.description = description;
     }
 
-    @NotNull
-    @Size(min = 2, max = 30)
+    @NotNull(message = "The name cannot be null")
+    @Size(min = 2, max = 30, message = "The name must be between 2 and 30 characters")
     @Column(nullable = false)
     private String name;
 
@@ -42,12 +40,12 @@ public class Product {
     @Column(nullable = false)
     private BigDecimal price;
 
-    @Size(min = 4, max = 300, message = "The description must be between 4 and 300 characters")
+    @Size(max = 300, message = "The description must be max 300 characters")
     @Column(nullable = true)
     private String description;
 
     @Id
-    @NotNull
+    @NotNull(message = "The barcode cannot be null")
     @Size(min = 5, max = 5, message = "The barcode must be 5 characters")
     @Digits(integer = 5, fraction = 0, message = "The barcode must be a number")
     @Column(unique = true, nullable = false)

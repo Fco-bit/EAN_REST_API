@@ -32,7 +32,7 @@ public class Provider {
     @Column(nullable = false)
     private String name;
 
-    @Size(min = 4, max = 300, message = "The adress must be between 4 and 300 characters")
+    @Size(max = 300, message = "The adress must be max 300 characters")
     @Column(nullable = true)
     private String address;
 

@@ -1,6 +1,9 @@
 # EAN_REST_API
 REST API built using Spring framework that allows the retrieval of product information from barcodes (EAN) as well as making CRUD petitions to the entities involved 
 (Products and Provider).
+# EAN_REST_API
+REST API built using Spring framework that allows the retrieval of product information from barcodes (EAN) as well as making CRUD petitions to the entities involved 
+(Products and Provider).
 
 ## Introduction 
 EANs are codes with this format: PPPPPPP+NNNNN+D.
@@ -36,3 +39,15 @@ This API allows you to enter a concrete EAN and it will provide you with the Pro
 
 * In the "application.properties" file (src/main/application.properties) change the path of the "spring-datasource.url"
 * Set the username and password to your liking changing  "spring.datasource.username" and "spring.datasource.password"
+* The application can be deployed using the command ```mvn spring-boot:run``` 
+* The numerous test of this API can be executed by using the command: ```mvn test``` 
+# Technologies used 
+* Caffeine: A high-performance caching library used to improve application performance by storing frequently accessed data in memory, reducing the number of expensive operations needed to fetch data from other sources.
+* JUnit: A popular unit testing framework for Java that provides a set of annotations and methods to write and run tests to verify the functionality of code.
+* Mockito: A mocking framework used to create mock objects to test the behavior of objects that are dependent on other objects.
+* Spring Boot: An open-source Java-based framework used to create stand-alone, production-grade Spring-based applications with minimal setup and configuration.
+* Spring Security: A powerful and highly customizable authentication and access-control framework used to secure Spring-based applications.
+* Spring Web: A module of the Spring Framework that provides a number of features to build web-based applications, including support for RESTful web services, URL routing, view rendering, and more.
+* H2 Database: An in-memory relational database management system written in Java, used as a lightweight database option for development and testing.
+* Finally, Spring Initializr is a web-based tool that helps create and configure new Spring Boot projects quickly and easily by providing a set of default dependencies and project settings.
+

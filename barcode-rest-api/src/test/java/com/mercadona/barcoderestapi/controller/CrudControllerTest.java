@@ -49,7 +49,8 @@ public class CrudControllerTest {
                 cacheManager.getCacheNames().stream()
                                 .forEach(cacheName -> cacheManager.getCache(cacheName).clear());
         }
-        //Before each test, clear the cache to avoid problems
+
+        // Before each test, clear the cache to avoid problems
         @BeforeEach
         public void setUp() {
                 evictAllCaches();
@@ -86,7 +87,7 @@ public class CrudControllerTest {
 
                 MvcResult result = assertDoesNotThrow(
                                 () -> mockMvc.perform(get("/getProduct/{barcode}", productBarcode))
-                                                .andExpect(status().isBadRequest()).andReturn());
+                                                .andExpect(status().isNotFound()).andReturn());
 
                 verify(productService, times(1)).getById(productBarcode);
                 verify(productService, times(1)).validBarcode(productBarcode);
@@ -206,12 +207,17 @@ public class CrudControllerTest {
         public void testCreateProductInvalidDescription() throws Exception {
                 MvcResult result = assertDoesNotThrow(() -> mockMvc
                                 .perform(post("/addProduct").contentType("application/json").content(
-                                                "{\"barcode\":55555,\"name\":\"TestProduct\",\"price\":1.99,\"description\":34}"))
+                                                "{\"barcode\":55555,\"name\":\"TestProduct\",\"price\":1.99,\"description\":"
+                                                                +
+                                                                "\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec auctor, nisl eget ultricies luctus, "
+                                                                + "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec auctor, nisl eget ultricies luctus,"
+                                                                +
+                                                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec auctor, nisl eget ultricies luctussasasasasadfdf\"}"))
                                 .andExpect(status().isBadRequest()).andReturn());
 
                 // assert that error message is returned
                 assertTrue(result.getResponse().getContentAsString()
-                                .contains("The description must be between 4 and 300 characters"));
+                                .contains("The description must be max 300 characters"));
         }
 
         @Test
@@ -440,12 +446,16 @@ public class CrudControllerTest {
                 MvcResult result = assertDoesNotThrow(() -> mockMvc
                                 .perform(post("/addProvider").contentType("application/json").content(
 
-                                                "{\"barcode\":7777777,\"name\":\"Test Provider\",\"address\":\"\"}"))
+                                                "{\"barcode\":7777777,\"name\":\"Test Provider\",\"address\":" +
+                                                                "\"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec auctor, nisl eget ultricies luctus, "
+                                                                + "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec auctor, nisl eget ultricies luctus,"
+                                                                +
+                                                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec auctor, nisl eget ultricies luctussasasasasadfdf\"}"))
                                 .andExpect(status().isBadRequest()).andReturn());
 
                 // assert that the correct provider is returned
                 assertTrue(result.getResponse().getContentAsString()
-                                .contains("The adress must be between 4 and 300 characters"));
+                                .contains("The adress must be max 300 characters"));
 
         }
 

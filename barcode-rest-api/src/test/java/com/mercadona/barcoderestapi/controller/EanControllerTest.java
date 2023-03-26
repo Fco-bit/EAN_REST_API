@@ -9,7 +9,6 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Optional;
 
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +51,9 @@ public class EanControllerTest {
         cacheManager.getCacheNames().stream()
                 .forEach(cacheName -> cacheManager.getCache(cacheName).clear());
     }
-    //before each test, clear the cache since the controller we are testing is using it.
+
+    // before each test, clear the cache since the controller we are testing is
+    // using it.
     @BeforeEach
     public void setUp() {
         evictAllCaches();
@@ -106,7 +107,6 @@ public class EanControllerTest {
     public void testGetEan13InvalidEan() {
 
         String ean13 = "7777777555552";
-
         when(eanService.eanValidator(ean13)).thenReturn("invalid ean");
 
         assertDoesNotThrow(() -> {
@@ -119,7 +119,6 @@ public class EanControllerTest {
 
     @Test
     public void testGetEan13InvalidProductCode() {
-
         String ean13 = "77777775555S2";
 
         when(eanService.eanValidator(ean13)).thenReturn("success");

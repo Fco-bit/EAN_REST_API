@@ -57,8 +57,8 @@ public class CrudController {
         Product product = productService.getById(barcode).orElse(null);
         if (product != null) {
             return ResponseEntity.ok(product);
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new HashMap<>() {
+        } else {// If the product does not exist, return a 404
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new HashMap<>() {
                 {
                     put("message", "Product not found");
                 }
@@ -79,6 +79,7 @@ public class CrudController {
                 }
             });
         }
+        // Check if the product already exists and return a 400 and a error message
         if (productService.existsById(product.getBarcode())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new HashMap<>() {
                 {
@@ -116,10 +117,10 @@ public class CrudController {
                 }
             });
         }
-
         if (productService.existsById(barcode)) {
 
             Product saved_product = productService.saveOrUpdate(product);
+            // If the barcode is different, delete the old product
             if (barcode != product.getBarcode()) {
                 productService.delete(barcode);
             }
@@ -157,7 +158,8 @@ public class CrudController {
                     put("message", "Product deleted successfully");
                 }
             });
-        } else {
+        } // If the product does not exist, return a 404
+        else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new HashMap<>() {
                 {
                     put("message", "Product not found");
@@ -167,7 +169,7 @@ public class CrudController {
     }
 
     @GetMapping("/getProvider/{id}")
-    @Cacheable("getProduct")
+    @Cacheable("getProvider")
     public ResponseEntity<Object> getProvider(@PathVariable String id) throws Exception {
         // Check if the barcode valid
         String msgResult = providerService.validBarcode(id);
@@ -182,7 +184,7 @@ public class CrudController {
         Provider provider = providerService.getById(id).orElse(null);
         if (provider != null) {
             return ResponseEntity.ok(provider);
-        } else {
+        } else {// If the provider does not exist, return a 404
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new HashMap<>() {
                 {
                     put("message", "Provider not found");
@@ -203,7 +205,7 @@ public class CrudController {
                     put("message", errors);
                 }
             });
-        }
+        } // Check if the provider already exists and return a 400 and a error message
         if (providerService.existsById(provider.getBarcode())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new HashMap<>() {
                 {
@@ -253,7 +255,8 @@ public class CrudController {
                     put("message", saved_provider);
                 }
             });
-        } else {
+        } // If the provider does not exist, return a 404
+        else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new HashMap<>() {
                 {
                     put("message", "Provider not found");
@@ -293,7 +296,7 @@ public class CrudController {
     // in the differents endpoints of the API
     // and will return a JSON with the error message, it will be interesting to be
     // more precise and handle different exceptions
-    // with different error messages
+    // with different error messages.
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleException(Exception ex) {
         // Build the response entity with the Exception error message

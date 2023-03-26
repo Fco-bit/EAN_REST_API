@@ -4,10 +4,10 @@ package com.mercadona.barcoderestapi.model;
 public enum DestinationEnum {
     SPAIN, PORTUGAL, WAREHOUSE, OFFICE, HIVE;
 
-    public static DestinationEnum getDestinationFromCode(Integer code){
-        //Conditions from briefing the switch case
-        code = 0 < code && code <= 5 ?  -1 : code;
-        switch(code){
+    public static DestinationEnum getDestinationFromCode(Integer code) {
+        // Conditions from briefing the switch case
+        code = 0 < code && code <= 5 ? -1 : code;
+        switch (code) {
             case -1:
                 return SPAIN;
             case 6:

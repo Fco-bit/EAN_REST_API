@@ -14,7 +14,8 @@ public class ProviderService {
     @Autowired
     private ProviderRepository providerRepository;
 
-    //It only makes sense to cache the getById method since it is the only one who does not make a change if the DB
+    // It only makes sense to cache the getById method since it is the only one who
+    // does not make a change if the DB
     @Cacheable("providers")
     public Optional<Provider> getById(String id) {
         return providerRepository.findById(id);
@@ -28,11 +29,12 @@ public class ProviderService {
         providerRepository.deleteById(id);
     }
 
-    
+    // not cacheable since can lead to inconsistencies
     public Boolean existsById(String id) {
         return providerRepository.existsById(id);
     }
-    
+
+    // Validate the provider barcode
     public String validBarcode(String barcode) {
         try {
             Integer.parseInt(barcode);

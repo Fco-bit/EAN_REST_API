@@ -46,6 +46,7 @@ public class EanService {
 
     }
 
+    // Validate the provider and product barcodes using their respective services
     public String validateProductAndProvideCodes(String providerBarcode, String productBarcode) {
         String validatorMessage = providerService.validBarcode(providerBarcode);
         if (validatorMessage != "success") {
