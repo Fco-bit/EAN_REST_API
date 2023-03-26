@@ -37,7 +37,7 @@ This API allows you to enter a concrete EAN and it will provide you with the Pro
 
 ### Configuration 
 
-* In the "application.properties" file (src/main/application.properties) change the path of the "spring-datasource.url"
+* In the "application.properties" file (src/main/application.properties) change the path of the "spring-datasource.url" to the path you want to placed the database (You will probably have to create the file where the database will be placed if its does not exists previously)
 * Set the username and password to your liking changing  "spring.datasource.username" and "spring.datasource.password"
 * The application can be deployed using the command ```mvn spring-boot:run``` 
 * The numerous test of this API can be executed by using the command: ```mvn test``` 
