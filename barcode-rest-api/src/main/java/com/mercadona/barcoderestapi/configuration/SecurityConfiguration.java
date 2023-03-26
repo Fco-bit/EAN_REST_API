@@ -48,7 +48,7 @@ public class SecurityConfiguration {
     
     @Bean
     public CacheManager cacheManager() {
-        String [] cacheNames = {"products", "providers"};
+        String [] cacheNames = {"products", "providers", "eanReader"};
         CaffeineCacheManager cacheManager = new CaffeineCacheManager();
         cacheManager.setCaffeine(Caffeine.newBuilder().expireAfterWrite(1, TimeUnit.MINUTES));
         cacheManager.setCacheNames(Arrays.asList(cacheNames));

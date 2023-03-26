@@ -9,11 +9,13 @@ import static org.mockito.Mockito.when;
 import java.math.BigDecimal;
 import java.util.Optional;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.cache.CacheManager;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -37,8 +39,21 @@ public class CrudControllerTest {
         @MockBean
         private ProductService productService;
 
+        @Autowired
+        CacheManager cacheManager;
+
         @MockBean
         private ProviderService providerService;
+
+        public void evictAllCaches() {
+                cacheManager.getCacheNames().stream()
+                                .forEach(cacheName -> cacheManager.getCache(cacheName).clear());
+        }
+        //Before each test, clear the cache to avoid problems
+        @BeforeEach
+        public void setUp() {
+                evictAllCaches();
+        }
 
         @Test
         public void testGetProduct() throws Exception {
@@ -52,7 +67,7 @@ public class CrudControllerTest {
                 when(productService.getById(productBarcode)).thenReturn(Optional.of(mockProduct));
                 when(productService.validBarcode(productBarcode)).thenReturn("success");
                 // assert that the product is returned correctly
-                MvcResult result = assertDoesNotThrow(
+                assertDoesNotThrow(
                                 () -> mockMvc.perform(get("/getProduct/{barcode}", productBarcode))
                                                 .andExpect(status().isOk()).andReturn());
                 // assert that the productService is called as we expect
@@ -141,7 +156,7 @@ public class CrudControllerTest {
         }
 
         @Test
-        public void testCreateAlreadyExistingProduct() throws Exception{
+        public void testCreateAlreadyExistingProduct() throws Exception {
                 String productName = "Test Product";
                 String productDescription = "Test Product Description";
                 String productBarcode = "55555";
@@ -161,7 +176,8 @@ public class CrudControllerTest {
 
                 // assert that the correct product is returned
 
-                assertTrue(result.getResponse().getContentAsString().contains("Provider with the barcode 55555 already exists"));
+                assertTrue(result.getResponse().getContentAsString()
+                                .contains("Provider with the barcode 55555 already exists"));
         }
 
         @Test
@@ -517,10 +533,12 @@ public class CrudControllerTest {
                                 .contains("Barcode must be a int number"));
         }
 
-        // The Provider Entity validation for editing/updating is the same as for creating,
-        // so I dont find it completely necessary to test all the different cases for editing/updating
+        // The Provider Entity validation for editing/updating is the same as for
+        // creating,
+        // so I dont find it completely necessary to test all the different cases for
+        // editing/updating
 
-        @Test 
+        @Test
         public void testDeleteProvider() throws Exception {
                 String providerBarcode = "7777777";
 
@@ -528,13 +546,14 @@ public class CrudControllerTest {
                 when(providerService.existsById(providerBarcode)).thenReturn(true);
                 when(providerService.validBarcode(providerBarcode)).thenReturn("success");
 
-                MvcResult result = assertDoesNotThrow(() -> mockMvc.perform(delete("/deleteProvider/" + providerBarcode))
-                                .andExpect(status().isOk()).andReturn());
+                MvcResult result = assertDoesNotThrow(
+                                () -> mockMvc.perform(delete("/deleteProvider/" + providerBarcode))
+                                                .andExpect(status().isOk()).andReturn());
 
                 // assert that the correct provider is returned
                 assertTrue(result.getResponse().getContentAsString().contains("Provider deleted"));
         }
-        
+
         @Test
         public void testDeleteNotExistingProvider() throws Exception {
                 String providerBarcode = "7777777";
@@ -543,10 +562,11 @@ public class CrudControllerTest {
                 when(providerService.existsById(providerBarcode)).thenReturn(false);
                 when(providerService.validBarcode(providerBarcode)).thenReturn("success");
 
-                MvcResult result = assertDoesNotThrow(() -> mockMvc.perform(delete("/deleteProvider/" + providerBarcode))
-                                .andExpect(status().isNotFound()).andReturn());
+                MvcResult result = assertDoesNotThrow(
+                                () -> mockMvc.perform(delete("/deleteProvider/" + providerBarcode))
+                                                .andExpect(status().isNotFound()).andReturn());
 
                 // assert that the correct provider is returned
                 assertTrue(result.getResponse().getContentAsString().contains("Provider not found"));
-        }        
+        }
 }
