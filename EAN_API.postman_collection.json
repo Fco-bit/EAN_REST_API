@@ -1,0 +1,501 @@
+{
+	"info": {
+		"_postman_id": "b3f2f377-f98b-40aa-8a4d-1e82d2b9b7b6",
+		"name": "EAN_API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21352650"
+	},
+	"item": [
+		{
+			"name": "Product_Crud",
+			"item": [
+				{
+					"name": "Create Product 1",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {   \r\n        \"barcode\": \"11111\",  \r\n        \"price\": 12.99,  \r\n        \"name\": \"Aguacate\",\r\n        \"description\": \"Aguacate muy sabroso y fresco\"\r\n    }   ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/addProduct",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"addProduct"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Product 2",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {   \r\n        \"barcode\": \"11112\",  \r\n        \"price\": 1.00,  \r\n        \"name\": \"Cacahuetes fritos\"\r\n    }   ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/addProduct",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"addProduct"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Created Product 3",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {   \r\n        \"barcode\": \"11113\",  \r\n        \"price\": 3.72,  \r\n        \"name\": \"Pechuga de Pollo\",\r\n        \"description\": \"Pechuga de Pollo Fileteada Extrafina\"\r\n    }   ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/addProduct",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"addProduct"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Product 1",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/getProduct/11111",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"getProduct",
+								"11111"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Product 2",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/getProduct/11112",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"getProduct",
+								"11112"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Product 3",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/getProduct/11113",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"getProduct",
+								"11113"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Product",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Aguacate\",\r\n    \"price\": 4.00,\r\n    \"description\": \"Aguacate muy dulce y salado\",\r\n    \"barcode\": \"11111\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/updateProduct/11111",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"updateProduct",
+								"11111"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Product EAN",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {   \r\n        \"barcode\": \"01999\",  \r\n        \"price\": 3.72,  \r\n        \"name\": \"Pechuga de Pollo\",\r\n        \"description\": \"Pechuga de Pollo Fileteada Extrafina\"\r\n    }   ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/updateProduct/11113",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"updateProduct",
+								"11113"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Product new EAN",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/getProduct/01999",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"getProduct",
+								"01999"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/deleteProduct/11111",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"deleteProduct",
+								"11111"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Provider_CRUD",
+			"item": [
+				{
+					"name": "Create Provider 1",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {  \r\n        \"barcode\": \"7777777\",  \r\n        \"name\": \"HSN\",  \r\n        \"address\": \"HSN Murcia\"  \r\n    }   ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/addProvider",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"addProvider"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Provider 2",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {  \r\n        \"barcode\": \"8437008\",  \r\n        \"name\": \"Hacendado\",  \r\n        \"address\": \"Valencia\"  \r\n    }   ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/addProvider",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"addProvider"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Provider 3",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {  \r\n        \"barcode\": \"8437007\",  \r\n        \"name\": \"Danone\"\r\n    }   ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/addProvider",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"addProvider"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Provider 1",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/getProvider/7777777",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"getProvider",
+								"7777777"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Provider 2",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/getProvider/8437008",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"getProvider",
+								"8437008"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Provider EAN",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \r\n        \"name\": \"Danone\",\r\n        \"address\": \"Madrid\",\r\n        \"barcode\": \"6547773\"\r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/updateProvider/8437007",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"updateProvider",
+								"8437007"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Product new EAN",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/getProvider/6547773",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"getProvider",
+								"6547773"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/deleteProvider/8437008",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"deleteProvider",
+								"8437008"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "EANReader",
+			"item": [
+				{
+					"name": "Valid EanReader Request",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/getEan/7777777111112",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"getEan",
+								"7777777111112"
+							]
+						},
+						"description": "EANs are codes with this format: PPPPPPP+NNNNN+D.\n\nThe digits indicated with P refer to the supplier that manufactures the product. The digits indicated with N refer to the product code and the digit indicated with D refers to a destination digit.\n\nPut valid Product barcode and Provider barcodes together to obtain a succesful response"
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid Destination",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/getEan/7777777111117",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"getEan",
+								"7777777111117"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
