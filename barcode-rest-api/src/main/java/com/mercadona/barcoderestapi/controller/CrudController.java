@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -41,6 +42,7 @@ public class CrudController {
     }
 
     @GetMapping("/getProduct/{barcode}")
+    @Cacheable("getProduct")
     public ResponseEntity<Object> getProduct(@PathVariable String barcode) throws Exception {
 
         // Check if the barcode valid
@@ -165,6 +167,7 @@ public class CrudController {
     }
 
     @GetMapping("/getProvider/{id}")
+    @Cacheable("getProduct")
     public ResponseEntity<Object> getProvider(@PathVariable String id) throws Exception {
         // Check if the barcode valid
         String msgResult = providerService.validBarcode(id);
