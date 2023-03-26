@@ -9,7 +9,7 @@ The digits indicated with P refer to the supplier that manufactures the product.
 This API allows you to enter a concrete EAN and it will provide you with the Product´s info as well as the Provider´s info and Destination.
 
 ## API ENDPOINTS
-####This is the endpoint for the EANreader functionality
+#### This is the endpoint for the EANreader functionality
 
 * [GET] ```/getEan/{EanCode}```: Returns basic data of the product, supplier and destination.
 
@@ -27,7 +27,12 @@ This API allows you to enter a concrete EAN and it will provide you with the Pro
 * [Delete] ```/deleteProvider/{EanCode}```: Deletes an existing Provider.
 
 ## API SET UP
-###Requirements
+### Requirements
 
 - [Java](https://www.oracle.com/java/technologies/downloads/ "Java") 19.02 or higher (Java 19.02 is the one I used so I am not sure if with a lower version will work)
 - [Apache-maven-3.9.1 ](https://maven.apache.org/download.cgi "Apache-maven-3.9.1 ")
+
+### Configuration 
+
+* In the "application.properties" file (src/main/application.properties) change the path of the "spring-datasource.url"
+* Set the username and password to your liking changing  "spring.datasource.username" and "spring.datasource.password"
