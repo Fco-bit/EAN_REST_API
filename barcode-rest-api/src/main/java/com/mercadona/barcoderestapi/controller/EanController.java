@@ -64,6 +64,7 @@ public class EanController {
                 .getDestinationFromCode(Integer.parseInt(ean13Map.get("detination")));
 
         // Check if the data is null, if so return a exception
+        //It could be interesting to return a more precise error message based on from which variable is null
         if (product == null || provider == null || destination == null) {
             return ResponseEntity.badRequest().body(new HashMap<>() {
                 {
