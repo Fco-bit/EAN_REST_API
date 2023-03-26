@@ -1,6 +1,5 @@
 package com.mercadona.barcoderestapi.controller;
 
-import java.nio.file.AccessDeniedException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -9,11 +8,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -41,25 +42,27 @@ public class CrudController {
 
     @GetMapping("/getProduct/{barcode}")
     public ResponseEntity<Object> getProduct(@PathVariable String barcode) throws Exception {
-        try {
-            Integer intBarcode = Integer.parseInt(barcode);
-            Product product = productService.getById(intBarcode).orElse(null);
-            if (product != null) {
-                return ResponseEntity.ok(product);
-            } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new HashMap<>() {
-                    {
-                        put("message", "Product not found");
-                    }
-                });
-            }
-        } catch (NumberFormatException e) {
+
+        // Check if the barcode valid
+        String msgResult = productService.validBarcode(barcode);
+        if (msgResult != "success") {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new HashMap<>() {
                 {
-                    put("message", "Barcode must be a int number");
+                    put("message", msgResult);
                 }
             });
         }
+        Product product = productService.getById(barcode).orElse(null);
+        if (product != null) {
+            return ResponseEntity.ok(product);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new HashMap<>() {
+                {
+                    put("message", "Product not found");
+                }
+            });
+        }
+
     }
 
     @PostMapping("/addProduct")
@@ -74,7 +77,13 @@ public class CrudController {
                 }
             });
         }
-
+        if (productService.existsById(product.getBarcode())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new HashMap<>() {
+                {
+                    put("message", "Provider with the barcode " + product.getBarcode() + " already exists");
+                }
+            });
+        }
         Product saved_product = productService.saveOrUpdate(product);
         return ResponseEntity.status(HttpStatus.CREATED).body(new HashMap<>() {
             {
@@ -84,9 +93,18 @@ public class CrudController {
 
     }
 
-    @PostMapping("/updateProduct/{barcode}")
-    public ResponseEntity<Object> updateProduct(@PathVariable Integer barcode, @Valid @RequestBody Product product,
+    @PutMapping("/updateProduct/{barcode}")
+    public ResponseEntity<Object> updateProduct(@PathVariable String barcode, @Valid @RequestBody Product product,
             BindingResult bindingResult) throws Exception {
+        // Check if the barcode valid
+        String msgResult = productService.validBarcode(barcode);
+        if (msgResult != "success") {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new HashMap<>() {
+                {
+                    put("message", msgResult);
+                }
+            });
+        }
         if (bindingResult.hasErrors()) {
             // get the errors messages
             List<String> errors = bindingResult.getAllErrors().stream().map(x -> x.getDefaultMessage()).toList();
@@ -103,9 +121,10 @@ public class CrudController {
             if (barcode != product.getBarcode()) {
                 productService.delete(barcode);
             }
-            return ResponseEntity.status(HttpStatus.CREATED).body(new HashMap<>() {
+            return ResponseEntity.status(HttpStatus.OK).body(new HashMap<>() {
                 {
-                    put("message", saved_product);
+                    put("message", "Product updated successfully");
+                    put("product", saved_product);
                 }
             });
         } else {
@@ -117,13 +136,23 @@ public class CrudController {
         }
     }
 
-    @GetMapping("/deleteProduct/{barcode}")
-    public ResponseEntity<Object> deleteProduct(@PathVariable Integer barcode) throws Exception {
+    @DeleteMapping("/deleteProduct/{barcode}")
+    public ResponseEntity<Object> deleteProduct(@PathVariable String barcode) throws Exception {
+        // Check if the barcode valid
+        String msgResult = productService.validBarcode(barcode);
+        if (msgResult != "success") {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new HashMap<>() {
+                {
+                    put("message", msgResult);
+                }
+            });
+        }
+
         if (productService.existsById(barcode)) {
             productService.delete(barcode);
             return ResponseEntity.status(HttpStatus.OK).body(new HashMap<>() {
                 {
-                    put("message", "Product deleted");
+                    put("message", "Product deleted successfully");
                 }
             });
         } else {
@@ -137,25 +166,27 @@ public class CrudController {
 
     @GetMapping("/getProvider/{id}")
     public ResponseEntity<Object> getProvider(@PathVariable String id) throws Exception {
-        try {
-            Integer intBarcode = Integer.parseInt(id);
-            Provider provider = providerService.getById(intBarcode).orElse(null);
-            if (provider != null) {
-                return ResponseEntity.ok(provider);
-            } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new HashMap<>() {
-                    {
-                        put("message", "provider not found");
-                    }
-                });
-            }
-        } catch (NumberFormatException e) {
+        // Check if the barcode valid
+        String msgResult = providerService.validBarcode(id);
+        if (msgResult != "success") {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new HashMap<>() {
                 {
-                    put("message", "Barcode must be a int number");
+                    put("message", msgResult);
                 }
             });
         }
+
+        Provider provider = providerService.getById(id).orElse(null);
+        if (provider != null) {
+            return ResponseEntity.ok(provider);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new HashMap<>() {
+                {
+                    put("message", "Provider not found");
+                }
+            });
+        }
+
     }
 
     @PostMapping("/addProvider")
@@ -170,6 +201,13 @@ public class CrudController {
                 }
             });
         }
+        if (providerService.existsById(provider.getBarcode())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new HashMap<>() {
+                {
+                    put("message", "Provider with the barcode " + provider.getBarcode() + " already exists");
+                }
+            });
+        }
 
         Provider saved_provider = providerService.saveOrUpdate(provider);
         return ResponseEntity.status(HttpStatus.CREATED).body(new HashMap<>() {
@@ -180,9 +218,18 @@ public class CrudController {
 
     }
 
-    @PostMapping("/updateProvider/{barcode}")
-    public ResponseEntity<Object> updateProvider(@PathVariable Integer barcode, @Valid @RequestBody Provider provider,
+    @PutMapping("/updateProvider/{barcode}")
+    public ResponseEntity<Object> updateProvider(@PathVariable String barcode, @Valid @RequestBody Provider provider,
             BindingResult bindingResult) throws Exception {
+        // Check if the barcode valid
+        String msgResult = providerService.validBarcode(barcode);
+        if (msgResult != "success") {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new HashMap<>() {
+                {
+                    put("message", msgResult);
+                }
+            });
+        }
         if (bindingResult.hasErrors()) {
             // get the errors messages
             List<String> errors = bindingResult.getAllErrors().stream().map(x -> x.getDefaultMessage()).toList();
@@ -212,8 +259,17 @@ public class CrudController {
         }
     }
 
-    @GetMapping("/deleteProvider/{id}")
-    public ResponseEntity<Object> deleteProvider(@PathVariable Integer id) throws Exception {
+    @DeleteMapping("/deleteProvider/{id}")
+    public ResponseEntity<Object> deleteProvider(@PathVariable String id) throws Exception {
+        // Check if the barcode valid
+        String msgResult = providerService.validBarcode(id);
+        if (msgResult != "success") {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new HashMap<>() {
+                {
+                    put("message", msgResult);
+                }
+            });
+        }
         if (providerService.existsById(id)) {
             providerService.delete(id);
             return ResponseEntity.status(HttpStatus.OK).body(new HashMap<>() {
@@ -230,15 +286,17 @@ public class CrudController {
         }
     }
 
-    // Exception handler for the REST API this will handle all the exceptions thrown in the differents endpoints of the API
-    // and will return a JSON with the error message, it will be interesting to be more precise and handle different exceptions
+    // Exception handler for the REST API this will handle all the exceptions thrown
+    // in the differents endpoints of the API
+    // and will return a JSON with the error message, it will be interesting to be
+    // more precise and handle different exceptions
     // with different error messages
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleException(Exception ex) {
-        // Build the response entity with the Exception error message 
+        // Build the response entity with the Exception error message
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new HashMap<>() {
             {
-                put("error message", "Some error happened" );
+                put("error message", "Some error happened");
             }
         });
     }

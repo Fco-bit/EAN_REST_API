@@ -3,6 +3,8 @@ package com.mercadona.barcoderestapi.model;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -22,7 +24,7 @@ import lombok.ToString;
 @NoArgsConstructor
 public class Product {
 
-    public Product(Integer barcode, String name, BigDecimal price, String description) {
+    public Product(String barcode, String name, BigDecimal price, String description) {
         this.barcode = barcode;
         this.name = name;
         this.price = price;
@@ -40,15 +42,16 @@ public class Product {
     @Column(nullable = false)
     private BigDecimal price;
 
-    @Size(min = 4, max = 300)
+    @Size(min = 4, max = 300, message = "The description must be between 4 and 300 characters")
     @Column(nullable = true)
     private String description;
 
     @Id
     @NotNull
-    @Digits(integer = 5, fraction = 0, message = "The barcode must be a number with 5 digits")
+    @Size(min = 5, max = 5, message = "The barcode must be 5 characters")
+    @Digits(integer = 5, fraction = 0, message = "The barcode must be a number")
     @Column(unique = true, nullable = false)
-    private Integer barcode;
+    private String barcode;
 
     @Column(nullable = false)
     private LocalDate createAt = LocalDate.now();

@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.mercadona.barcoderestapi.model.Provider;
 
-public interface ProviderRepository extends JpaRepository<Provider, Integer> {
+public interface ProviderRepository extends JpaRepository<Provider, String> {
 
 }

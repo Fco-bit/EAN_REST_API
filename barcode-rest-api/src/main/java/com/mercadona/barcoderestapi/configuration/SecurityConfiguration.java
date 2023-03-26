@@ -7,6 +7,7 @@ import org.springframework.cache.CacheManager;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -25,11 +26,11 @@ public class SecurityConfiguration {
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/getProduct/**")).permitAll()
                         .requestMatchers("/addProduct").permitAll()
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/updateProduct/**")).permitAll()
-                        .requestMatchers(AntPathRequestMatcher.antMatcher("/deleteProduct/**")).permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "deleteProduct/**").permitAll()
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/getProvider/**")).permitAll()
                         .requestMatchers("/addProvider").permitAll()
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/updateProvider/**")).permitAll()
-                        .requestMatchers(AntPathRequestMatcher.antMatcher("/deleteProvider/**")).permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "deleteProvider/**").permitAll()
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/getEan/**")).permitAll())
                 .headers(headers -> headers.frameOptions().disable())
                 .csrf(csrf -> csrf
@@ -37,7 +38,9 @@ public class SecurityConfiguration {
                         .ignoringRequestMatchers("/addProduct")
                         .ignoringRequestMatchers(AntPathRequestMatcher.antMatcher("/updateProduct/**"))
                         .ignoringRequestMatchers("/addProvider")
-                        .ignoringRequestMatchers(AntPathRequestMatcher.antMatcher("/updateProvider/**")));
+                        .ignoringRequestMatchers(AntPathRequestMatcher.antMatcher("/updateProvider/**"))
+                        .ignoringRequestMatchers(AntPathRequestMatcher.antMatcher("/deleteProduct/**"))
+                        .ignoringRequestMatchers(AntPathRequestMatcher.antMatcher("/deleteProvider/**")));
 
         return http.build();
     }
